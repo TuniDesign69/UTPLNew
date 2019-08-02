@@ -1,10 +1,10 @@
 package tn.esprit.spring.controller.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import tn.esprit.spring.controller.interfaces.IMembreController;
@@ -37,6 +36,7 @@ public class MembreController implements IMembreController {
 	public ResponseEntity<Object> login(@PathVariable("username") String username, @PathVariable("password") String password) {
 		if ((membreRepo.login(username, password).isEmpty() == false)) {
 			Membre loggedMembre = (Membre) (membreRepo.login(username, password).get(0));
+			loggedMembre.setMembreLastLogin(new Date());
 			return new ResponseEntity<>(loggedMembre, HttpStatus.OK);
 		}
 		return new ResponseEntity<>("{\"response\" : \"invalid username or password\"}", HttpStatus.OK);

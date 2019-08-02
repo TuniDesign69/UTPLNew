@@ -10,6 +10,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 public class Membre implements Serializable {
@@ -23,6 +25,7 @@ public class Membre implements Serializable {
 	private Long MembreCin;
 	private String MembreNom;
 	private String MembrePrenom;
+	@Temporal(TemporalType.DATE)
 	private Date MembreDateDeNaissance;
 	private String MembreUsername;
 	private String MembrePassword;
