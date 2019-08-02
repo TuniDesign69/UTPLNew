@@ -6,7 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,15 +23,15 @@ import tn.esprit.spring.entity.Commentaire;
 import tn.esprit.spring.service.interfaces.ICommentaireService;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/commentaire")
+@CrossOrigin(origins="http://localhost:4200")
 public class CommentaireController implements ICommentaireController {
 
 	@Autowired
 	ICommentaireService commentaireService;
 
 	@Override
-	@RequestMapping(value = "/commentaires", method = RequestMethod.GET, produces = {
-			MediaType.APPLICATION_JSON_VALUE })
+	@GetMapping("/list")
 	@ResponseBody
 	public List<Commentaire> getAllCommentaires() {
 		// TODO Auto-generated method stub
@@ -34,7 +39,7 @@ public class CommentaireController implements ICommentaireController {
 	}
 
 	@Override
-	@RequestMapping(value = "/addcommentaire/", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping("/add/")
 	public ResponseEntity<Void> addCommentaire(@RequestBody Commentaire commentaire) {
 		// TODO Auto-generated method stub
 		Long id = commentaireService.addCommentaire(commentaire);
@@ -44,7 +49,7 @@ public class CommentaireController implements ICommentaireController {
 	}
 
 	@Override
-	@RequestMapping(value = "/commentaire/{commentaireId}", method = RequestMethod.DELETE)
+	@DeleteMapping("/delete/{commentaireId}")
 	public ResponseEntity<Void> deleteCommentaireById(@PathVariable("commentaireId") Long id) {
 		// TODO Auto-generated method stub
 		commentaireService.deleteCommentaireById(id);
@@ -52,14 +57,14 @@ public class CommentaireController implements ICommentaireController {
 	}
 
 	@Override
-	@RequestMapping(value = "/commentaire/{commentaireId}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping("/edit/{commentaireId}")
 	public ResponseEntity<Void> updateCommentaire(@RequestBody Commentaire commentaire, @PathVariable("commentaireId") Long id) {
 		// TODO Auto-generated method stub
 		commentaireService.updateCommentaire(commentaire, id);
 		return new ResponseEntity<>(HttpStatus.OK);	}
 
 	@Override
-	@RequestMapping(value = "/commentaire/{commentaireId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping("details/{commentaireId}")
 	public ResponseEntity<Commentaire> getCommentaire(Long id) {
 		// TODO Auto-generated method stub
 		Commentaire commentaire = commentaireService.getCommentaire(id);

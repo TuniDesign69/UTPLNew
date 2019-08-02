@@ -6,7 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,21 +22,22 @@ import tn.esprit.spring.entity.Forum;
 import tn.esprit.spring.service.interfaces.IForumService;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/forum")
+@CrossOrigin(origins="http://localhost:4200")
 public class ForumController implements IForumController {
 
 	@Autowired
 	IForumService forumService;
 
 	@Override
-	@RequestMapping(value = "/forums", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE })
+	@GetMapping("/list")
 	public List<Forum> getAllForums() {
 		// TODO Auto-generated method stub
 		return forumService.getAllForums();
 	}
 
 	@Override
-	@RequestMapping(value = "/addforum/", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping("/add/")
 	public ResponseEntity<Void> addForum(@RequestBody Forum forum) {
 		// TODO Auto-generated method stub
 		Long id = forumService.addForum(forum);
@@ -41,7 +47,7 @@ public class ForumController implements IForumController {
 	}
 
 	@Override
-	@RequestMapping(value = "/forum/{forumId}", method = RequestMethod.DELETE)
+	@DeleteMapping("/delete/{forumId}")
 	public ResponseEntity<Void> deleteForumById(@PathVariable("forumId") Long id) {
 		// TODO Auto-generated method stub
 		forumService.deleteForumById(id);
@@ -49,7 +55,7 @@ public class ForumController implements IForumController {
 	}
 
 	@Override
-	@RequestMapping(value = "/forum/{forumId}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping("/edit/{forumId}")
 	public ResponseEntity<Void> updateForum(@RequestBody Forum forum, @PathVariable("forumId") Long id) {
 		// TODO Auto-generated method stub
 		forumService.updateForum(forum, id);
@@ -57,7 +63,7 @@ public class ForumController implements IForumController {
 	}
 
 	@Override
-	@RequestMapping(value = "/forum/{forumId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping("details/{forumId}")
 	public ResponseEntity<Forum> getForum(@PathVariable("forumId") Long id) {
 		// TODO Auto-generated method stub
 		Forum forum = forumService.getForum(id);

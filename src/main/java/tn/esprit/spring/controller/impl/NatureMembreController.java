@@ -6,7 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,7 +22,8 @@ import tn.esprit.spring.entity.NatureMembre;
 import tn.esprit.spring.service.interfaces.INatureMembreService;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/natureMembre")
+@CrossOrigin(origins="http://localhost:4200")
 public class NatureMembreController implements INatureMembreController{
 
 
@@ -25,14 +31,14 @@ public class NatureMembreController implements INatureMembreController{
 	INatureMembreService natureMembreService;
 	
 	@Override
-	@RequestMapping(value = "/natures", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE })
+	@GetMapping("/list")
 	public List<NatureMembre> getAllNatureMembres() {
 		// TODO Auto-generated method stub
 		return natureMembreService.getAllNatureMembres();
 	}
 
 	@Override
-	@RequestMapping(value = "/addnature/", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping("/add/")
 	public ResponseEntity<Void> addNatureMembre(@RequestBody NatureMembre nature) {
 		// TODO Auto-generated method stub
 		Long id = natureMembreService.addNatureMembre(nature);
@@ -42,7 +48,7 @@ public class NatureMembreController implements INatureMembreController{
 		}
 
 	@Override
-	@RequestMapping(value = "/nature/{natureId}", method = RequestMethod.DELETE)
+	@DeleteMapping("/delete/{natureId}")
 	public ResponseEntity<Void> deleteNatureMembreById(@PathVariable("natureId") Long id) {
 		// TODO Auto-generated method stub
 		natureMembreService.deleteNatureMembreById(id);
@@ -50,7 +56,7 @@ public class NatureMembreController implements INatureMembreController{
 		}
 
 	@Override
-	@RequestMapping(value = "/nature/{natureId}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping("/edit/{natureId}")
 	public ResponseEntity<Void> updateNatureMembre(@RequestBody NatureMembre nature, @PathVariable("natureId") Long id) {
 		// TODO Auto-generated method stub
 		natureMembreService.updateNatureMembre(nature, id);
@@ -58,7 +64,7 @@ public class NatureMembreController implements INatureMembreController{
 		}
 
 	@Override
-	@RequestMapping(value = "/nature/{natureId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping("details/{natureId}")
 	public ResponseEntity<NatureMembre> getNatureMembre(@PathVariable("natureId") Long id) {
 		// TODO Auto-generated method stub
 		NatureMembre nature = natureMembreService.getNatureMembre(id);

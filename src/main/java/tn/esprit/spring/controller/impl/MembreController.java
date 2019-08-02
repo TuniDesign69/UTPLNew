@@ -6,8 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,7 +23,8 @@ import tn.esprit.spring.repository.MembreRepository;
 import tn.esprit.spring.service.interfaces.IMembreService;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/membre")
+@CrossOrigin(origins="http://localhost:4200")
 public class MembreController implements IMembreController {
 
 	@Autowired
@@ -39,14 +44,14 @@ public class MembreController implements IMembreController {
 	}
 
 	@Override
-	@RequestMapping(value = "/membres", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE })
+	@GetMapping("/list")
 	public List<Membre> getAllMembres() {
 		// TODO Auto-generated method stub
 		return membreService.getAllMembres();
 	}
 
 	@Override
-	@RequestMapping(value = "/addmembre/", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping("/add/")
 	public ResponseEntity<Void> addMembre(@RequestBody Membre membre) {
 		// TODO Auto-generated method stub
 		Long id = membreService.addMembre(membre);
@@ -57,7 +62,7 @@ public class MembreController implements IMembreController {
 	}
 
 	@Override
-	@RequestMapping(value = "/membre/{membreId}", method = RequestMethod.DELETE)
+	@DeleteMapping("/delete/{membreId}")
 	public ResponseEntity<Void> deleteMembreById(@PathVariable("membreId") Long id) {
 		// TODO Auto-generated method stub
 		membreService.deleteMembreById(id);
@@ -65,7 +70,7 @@ public class MembreController implements IMembreController {
 	}
 
 	@Override
-	@RequestMapping(value = "/membre/{membreId}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping("/edit/{membreId}")
 	public ResponseEntity<Void> updateMembre(@RequestBody Membre membre, @PathVariable("membreId") Long id) {
 		// TODO Auto-generated method stub
 		membreService.updateMembre(membre, id);
@@ -73,7 +78,7 @@ public class MembreController implements IMembreController {
 	}
 
 	@Override
-	@RequestMapping(value = "/membre/{membreId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping("details/{membreId}")
 	public ResponseEntity<Membre> getMembre(@PathVariable("membreId") Long id) {
 		// TODO Auto-generated method stub
 		Membre membre = membreService.getMembre(id);

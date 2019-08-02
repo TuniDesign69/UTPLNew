@@ -6,7 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,14 +23,15 @@ import tn.esprit.spring.entity.Categorie;
 import tn.esprit.spring.service.interfaces.ICategorieService;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/categorie")
+@CrossOrigin(origins="http://localhost:4200")
 public class CategorieController implements ICategorieController{
 
 	@Autowired
 	ICategorieService categorieService;
 	
 	@Override
-	@RequestMapping(value = "/categories", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE })
+	@GetMapping("/list")
 	@ResponseBody
 	public List<Categorie> getAllCategories() {
 		// TODO Auto-generated method stub
@@ -33,7 +39,7 @@ public class CategorieController implements ICategorieController{
 	}
 
 	@Override
-	@RequestMapping(value = "/addcategorie/", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping("/add/")
 	public ResponseEntity<Void> addCategorie(@RequestBody Categorie categorie) {
 		// TODO Auto-generated method stub
 		Long id = categorieService.addCategorie(categorie);
@@ -42,21 +48,21 @@ public class CategorieController implements ICategorieController{
 		return new ResponseEntity<>(HttpStatus.CREATED);	}
 
 	@Override
-	@RequestMapping(value = "/categorie/{categorieId}", method = RequestMethod.DELETE)
+	@DeleteMapping("/delete/{categorieId}")
 	public ResponseEntity<Void> deleteCategorieById(@PathVariable("categorieId") Long id) {
 		// TODO Auto-generated method stub
 		categorieService.deleteCategorieById(id);
 		return new ResponseEntity<>(HttpStatus.OK);	}
 
 	@Override
-	@RequestMapping(value = "/categorie/{categorieId}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping("/edit/{categorieId}")
 	public ResponseEntity<Void> updateCategorie(@RequestBody Categorie categorie, @PathVariable("categorieId") Long id) {
 		// TODO Auto-generated method stub
 		categorieService.updateCategorie(categorie, id);
 		return new ResponseEntity<>(HttpStatus.OK);	}
 
 	@Override
-	@RequestMapping(value = "/categorie/{categorieId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping("details/{categorieId}")
 	public ResponseEntity<Categorie> getCategorie(@PathVariable("categorieId") Long id) {
 		// TODO Auto-generated method stub
 		Categorie categorie = categorieService.getCategorie(id);

@@ -6,7 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,14 +23,15 @@ import tn.esprit.spring.entity.Article;
 import tn.esprit.spring.service.interfaces.IArticleService;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/article")
+@CrossOrigin(origins="http://localhost:4200")
 public class ArticleController implements IArticleController {
 
 	@Autowired
 	IArticleService articleService;
 
 	@Override
-	@RequestMapping(value = "/articles", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE })
+	@GetMapping("/list")
 	@ResponseBody
 	public List<Article> getAllArticles() {
 		// TODO Auto-generated method stub
@@ -33,7 +39,7 @@ public class ArticleController implements IArticleController {
 	}
 
 	@Override
-	@RequestMapping(value = "/addarticle/", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping("/add/")
 	public ResponseEntity<Void> addArticle(@RequestBody Article article) {
 		// TODO Auto-generated method stub
 		Long id = articleService.addArticle(article);
@@ -43,7 +49,7 @@ public class ArticleController implements IArticleController {
 	}
 
 	@Override
-	@RequestMapping(value = "/article/{articleId}", method = RequestMethod.DELETE)
+	@DeleteMapping("/delete/{articleId}")
 	public ResponseEntity<Void> deleteArticleById(@PathVariable("articleId") Long id) {
 		// TODO Auto-generated method stub
 		articleService.deleteArticleById(id);
@@ -52,7 +58,7 @@ public class ArticleController implements IArticleController {
 	}
 
 	@Override
-	@RequestMapping(value = "/article/{articleId}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping("/edit/{articleId}")
 	public ResponseEntity<Void> updateArticle(@RequestBody Article article, @PathVariable("articleId") Long id) {
 		// TODO Auto-generated method stub
 		articleService.updateArticle(article, id);
@@ -60,7 +66,7 @@ public class ArticleController implements IArticleController {
 	}
 
 	@Override
-	@RequestMapping(value = "/article/{articleId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping("details/{articleId}")
 	public ResponseEntity<Article> getArticle(@PathVariable("articleId") Long id) {
 		// TODO Auto-generated method stub
 		Article article = articleService.getArticle(id);
