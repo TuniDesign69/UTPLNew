@@ -31,8 +31,8 @@ public class Article implements Serializable {
 	@JoinColumn(name="fk_article_forum")
 	private Forum ArticleForum;
 	
-	@OneToMany(mappedBy="CommentaireArticle")
-	private List<Commentaire> ArticleListCommentaires;
+	@OneToMany(mappedBy = "CommentaireArticle")
+	private List<Commentaire> commentaire;
 	
 	public Article() {
 	}

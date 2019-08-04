@@ -6,13 +6,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import tn.esprit.spring.entity.Commentaire;
+import tn.esprit.spring.entity.CommentairePk;
+import tn.esprit.spring.repository.ArticleRepository;
 import tn.esprit.spring.repository.CommentaireRepository;
+import tn.esprit.spring.repository.MembreRepository;
 import tn.esprit.spring.service.interfaces.ICommentaireService;
 @Service
 public class CommentaireServiceImpl implements ICommentaireService {
 
 	@Autowired
 	CommentaireRepository commentaireRepo;
+
+	@Autowired
+	MembreRepository membreRepo;
+	
+	@Autowired
+	ArticleRepository articleRepo;
 
 	@Override
 	public List<Commentaire> getAllCommentaires() {
@@ -21,18 +30,19 @@ public class CommentaireServiceImpl implements ICommentaireService {
 	}
 
 	@Override
-	public Long addCommentaire(Commentaire commentaire) {
+	public boolean addCommentaire(Commentaire commentaire) {
 		// TODO Auto-generated method stub
-		try {
+		try{
 			commentaireRepo.save(commentaire);
-		} catch (Exception ex) {
-			return -1L;
+			return true;
+		}catch (Exception e) {
+			// TODO: handle exception
+			return false;
 		}
-		return commentaire.getCommentaireId();
 	}
 
 	@Override
-	public void deleteCommentaireById(Long id) {
+	public void deleteCommentaireById(CommentairePk id) {
 		// TODO Auto-generated method stub
 		commentaireRepo.deleteById(id);
 	}
@@ -44,19 +54,19 @@ public class CommentaireServiceImpl implements ICommentaireService {
 	}
 
 	@Override
-	public void updateCommentaire(Commentaire commentaire, Long id) {
+	public void updateCommentaire(Commentaire commentaire, CommentairePk id) {
 		// TODO Auto-generated method stub
 
 		Commentaire existing = commentaireRepo.findById(id).get();
 		if (existing != null) {
-			commentaire.setCommentaireId(id);
+			commentaire.setCommentairePk(id);;
 			existing = commentaire;
 			commentaireRepo.save(existing);
 		}
 	}
 
 	@Override
-	public Commentaire getCommentaire(Long id) {
+	public Commentaire getCommentaire(CommentairePk id) {
 		// TODO Auto-generated method stub
 		return commentaireRepo.findById(id).get();
 	}

@@ -12,9 +12,9 @@ public interface ICommentaireController {
 
 	ResponseEntity<Void> addCommentaire(Commentaire commentaire);
 
-	ResponseEntity<Void> deleteCommentaireById(Long id);
+	ResponseEntity<Void> deleteCommentaireById(Long articleId, Long membreCin);
 
-	ResponseEntity<Void> updateCommentaire(Commentaire commentaire, Long id);
+	ResponseEntity<Void> updateCommentaire(Commentaire commentaire, Long articleId, Long membreCin);
 
-	ResponseEntity<Commentaire> getCommentaire(Long id);
+	ResponseEntity<Commentaire> getCommentaire(Long articleId, Long membreCin);
 }

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import tn.esprit.spring.controller.interfaces.ICommentaireController;
 import tn.esprit.spring.entity.Commentaire;
+import tn.esprit.spring.entity.CommentairePk;
 import tn.esprit.spring.service.interfaces.ICommentaireService;
 
 @RestController
@@ -42,32 +43,40 @@ public class CommentaireController implements ICommentaireController {
 	@PostMapping("/add/")
 	public ResponseEntity<Void> addCommentaire(@RequestBody Commentaire commentaire) {
 		// TODO Auto-generated method stub
-		Long id = commentaireService.addCommentaire(commentaire);
-		if (id == -1)
+		if (commentaireService.addCommentaire(commentaire))
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 
 	@Override
-	@DeleteMapping("/delete/{commentaireId}")
-	public ResponseEntity<Void> deleteCommentaireById(@PathVariable("commentaireId") Long id) {
+	@DeleteMapping("/delete/{articleId}/{membreCin}")
+	public ResponseEntity<Void> deleteCommentaireById(@PathVariable("articleId") Long articleId, @PathVariable("membreCin") Long membreCin) {
 		// TODO Auto-generated method stub
-		commentaireService.deleteCommentaireById(id);
+		CommentairePk pk = new CommentairePk();
+		pk.setArticleId(articleId);
+		pk.setMembreCin(membreCin);
+		commentaireService.deleteCommentaireById(pk);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 	@Override
-	@PutMapping("/edit/{commentaireId}")
-	public ResponseEntity<Void> updateCommentaire(@RequestBody Commentaire commentaire, @PathVariable("commentaireId") Long id) {
+	@PutMapping("/edit/{articleId}/{membreCin}")
+	public ResponseEntity<Void> updateCommentaire(@RequestBody Commentaire commentaire, @PathVariable("articleId") Long articleId, @PathVariable("membreCin") Long membreCin) {
 		// TODO Auto-generated method stub
-		commentaireService.updateCommentaire(commentaire, id);
+		CommentairePk pk = new CommentairePk();
+		pk.setArticleId(articleId);
+		pk.setMembreCin(membreCin);
+		commentaireService.updateCommentaire(commentaire, pk);
 		return new ResponseEntity<>(HttpStatus.OK);	}
 
 	@Override
-	@GetMapping("details/{commentaireId}")
-	public ResponseEntity<Commentaire> getCommentaire(Long id) {
+	@GetMapping("details/{articleId}/{membreCin}")
+	public ResponseEntity<Commentaire> getCommentaire(@PathVariable("articleId") Long articleId, @PathVariable("membreCin") Long membreCin) {
 		// TODO Auto-generated method stub
-		Commentaire commentaire = commentaireService.getCommentaire(id);
+		CommentairePk pk = new CommentairePk();
+		pk.setArticleId(articleId);
+		pk.setMembreCin(membreCin);
+		Commentaire commentaire = commentaireService.getCommentaire(pk);
 		if (commentaire == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}

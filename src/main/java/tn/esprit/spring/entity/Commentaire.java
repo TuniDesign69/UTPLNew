@@ -1,11 +1,10 @@
 package tn.esprit.spring.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
@@ -17,30 +16,25 @@ public class Commentaire implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long CommentaireId;
+	@EmbeddedId
+	private CommentairePk CommentairePk;
 	
 	private String CommentaireLibelle;
 	private String CommentaireContenu;
 	private int CommentaireNote;
+	private Date CommentaireDate;
 	
 	@ManyToOne
-	@JoinColumn(name="fk_commentaire_membre")
+	@JoinColumn(name="MembreCin", referencedColumnName = "MembreCin", insertable = false, updatable = false)
 	private Membre CommentaireMembre;
 	
 	@ManyToOne
-	@JoinColumn(name="fk_commentaire_article")
+	@JoinColumn(name="ArticleId", referencedColumnName = "ArticleId", insertable = false, updatable = false)
 	private Article CommentaireArticle;
 	
 	public Commentaire() {
 	}
-	public Long getCommentaireId() {
-		return CommentaireId;
-	}
-	public void setCommentaireId(Long commentaireId) {
-		CommentaireId = commentaireId;
-	}
+
 	public String getCommentaireLibelle() {
 		return CommentaireLibelle;
 	}
@@ -62,11 +56,37 @@ public class Commentaire implements Serializable {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-	@Override
-	public String toString() {
-		return "Commentaire [CommentaireId=" + CommentaireId + ", CommentaireLibelle=" + CommentaireLibelle
-				+ ", CommentaireContenu=" + CommentaireContenu + ", CommentaireNote=" + CommentaireNote + "]";
+
+	public CommentairePk getCommentairePk() {
+		return CommentairePk;
 	}
-	
+
+	public void setCommentairePk(CommentairePk commentairePk) {
+		CommentairePk = commentairePk;
+	}
+
+	public Membre getCommentaireMembre() {
+		return CommentaireMembre;
+	}
+
+	public void setCommentaireMembre(Membre commentaireMembre) {
+		CommentaireMembre = commentaireMembre;
+	}
+
+	public Article getCommentaireArticle() {
+		return CommentaireArticle;
+	}
+
+	public void setCommentaireArticle(Article commentaireArticle) {
+		CommentaireArticle = commentaireArticle;
+	}
+
+	public Date getCommentaireDate() {
+		return CommentaireDate;
+	}
+
+	public void setCommentaireDate(Date commentaireDate) {
+		CommentaireDate = commentaireDate;
+	}
 	
 }

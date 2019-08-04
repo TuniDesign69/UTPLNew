@@ -44,9 +44,12 @@ public class Membre implements Serializable {
 	@ManyToMany(mappedBy="ForumListMembres")
 	private List<Forum> MembreListForums;
 	
-	@OneToMany(mappedBy="CommentaireMembre")
-	private List<Commentaire> MembreListCommentaires;
-
+	@OneToMany(mappedBy = "membre")
+	private List<CommissionMembreAffectation> commissionMembreAffectations; 
+	
+	@OneToMany(mappedBy = "CommentaireMembre")
+	private List<Commentaire> commentaire; 
+	
 	public Membre() {
 	}
 
